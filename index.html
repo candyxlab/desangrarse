@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OJOS - DESANGRAR(SE)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #8b1a1a;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+            cursor: crosshair;
+        }
+
+        .eye {
+            position: absolute;
+            width: 500px;
+            height: auto;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 0 15px rgba(139, 26, 26, 0.6));
+            z-index: 5;
+        }
+
+        .eye-top-left {
+            top: 5%;
+            left: 5%;
+        }
+
+        .eye-bottom-right {
+            bottom: 5%;
+            right: 5%;
+        }
+
+        .text-word {
+            position: absolute;
+            color: #8b1a1a;
+            font-size: 3.5rem;
+            letter-spacing: 0.1em;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        .text-no {
+            top: 5%;
+            left: 5%;
+            transform: translateX(-50%);
+            color: #8b1a1a;
+        }
+
+        .text-pedire {
+            top: 20%;
+            font-weight: 600;
+            left: 50%;
+            color: #8b1a1a;
+        }
+
+        .text-perdon {
+            top: 35%;
+            right: 15%;
+            color: #8b1a1a;
+        }
+
+        .text-por {
+            top: 60%;
+            left: 65%;
+            transform: translateX(-50%);
+            color: #8b1a1a;
+        }
+
+        .text-sentir {
+            top: 85%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #8b1a1a;
+            text-decoration: underline;
+            text-decoration-color: #8b1a1a;
+            text-underline-offset: 8px;
+            font-size: 4rem;
+            font-weight: bold;
+        }
+
+        .text-sentir a {
+            color: inherit;
+            text-decoration: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .text-sentir a:hover {
+            color: #6b8e6b;
+            text-decoration-color: #6b8e6b;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .eye {
+                width: 200px;
+            }
+
+            .text-word {
+                font-size: 1.8rem;
+            }
+
+            .text-sentir {
+                font-size: 2.2rem;
+            }
+
+            .text-pedire {
+                left: 10%;
+            }
+
+            .text-perdon {
+                right: 10%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img src="eyeball.gif" alt="Ojo" class="eye eye-top-left">
+    <img src="eyeball.gif" alt="Ojo" class="eye eye-bottom-right">
+
+    <div class="text-word text-no">no</div>
+    <div class="text-word text-pedire">pediré</div>
+    <div class="text-word text-perdon">perdon</div>
+    <div class="text-word text-por">por</div>
+    <div class="text-word text-sentir"><a href="main.html">sentir</a></div>
+
+    <audio id="backgroundAudio" autoplay loop preload="auto" muted>
+        <source src="1128.MP3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById('backgroundAudio');
+        audio.volume = 0.1;
+        
+        // Función para desmutear el audio
+        function unmuteAudio() {
+            audio.muted = false;
+        }
+        
+        // Función para intentar reproducir el audio
+        function playAudio() {
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        console.log('Audio reproduciéndose');
+                        // Intentar desmutear después de iniciar la reproducción
+                        unmuteAudio();
+                    })
+                    .catch(error => {
+                        console.log('Reproducción bloqueada, esperando interacción del usuario');
+                    });
+            }
+        }
+        
+        // Intentar reproducir cuando la página carga
+        window.addEventListener('load', () => {
+            playAudio();
+        });
+        
+        // Intentar reproducir y desmutear cuando el usuario interactúa (click, touch, keypress)
+        const userEvents = ['click', 'touchstart', 'keydown'];
+        userEvents.forEach(event => {
+            document.addEventListener(event, () => {
+                unmuteAudio();
+                if (audio.paused) {
+                    playAudio();
+                }
+            }, { once: true });
+        });
+        
+        // También intentar cuando el audio está listo
+        audio.addEventListener('canplaythrough', () => {
+            playAudio();
+        });
+    </script>
+</body>
+</html>
