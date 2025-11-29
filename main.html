@@ -205,10 +205,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
+            background-color: rgba(0, 0, 0, 0.6);
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
         }
 
         .video-modal.active {
@@ -216,10 +217,11 @@
         }
 
         .video-modal video {
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 70%;
+            max-height: 70%;
             width: auto;
             height: auto;
+            cursor: default;
         }
 
         .video-modal .close-button {
@@ -462,11 +464,19 @@
             }
         });
 
-        // Cerrar modal al hacer clic fuera del video
+        // Cerrar modal al hacer clic en cualquier parte
         document.getElementById('videoModal').addEventListener('click', function(e) {
-            if (e.target === this) {
+            const video = document.getElementById('fullscreenVideo');
+            // Cerrar si se hace clic en el fondo del modal o en el botón de cerrar
+            // No cerrar si se hace clic directamente en el video o sus controles
+            if (e.target === this || e.target.classList.contains('close-button')) {
                 closeVideoModal();
             }
+        });
+
+        // Prevenir que el clic en el video cierre el modal
+        document.getElementById('fullscreenVideo').addEventListener('click', function(e) {
+            e.stopPropagation();
         });
 
         // Lógica de audio de fondo
