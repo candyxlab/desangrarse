@@ -16,7 +16,7 @@
             color: #8b1a1a;
             font-family: 'Courier New', monospace;
             overflow: hidden;
-            height: 100vh;
+            min-height: 100vh;
             position: relative;
             cursor: crosshair;
         }
@@ -102,6 +102,13 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+                padding-bottom: 100px; /* Espacio para el menú del navegador */
+            }
+
             .eye {
                 width: 200px;
             }
@@ -110,24 +117,42 @@
                 font-size: 1.8rem;
             }
 
-            .text-sentir {
-                font-size: 2.2rem;
-                top: 70%;
+            .text-no {
+                top: 10%;
+                left: 10%;
             }
 
             .text-pedire {
-                left: 35%;
-                top: 35%;
-            }
-
-            .text-por {
-                left: 20%;
-                top: 65%;
+                left: 50%;
+                transform: translateX(-50%);
+                top: 25%;
             }
 
             .text-perdon {
                 right: 10%;
-                top: 50%;
+                top: 40%;
+            }
+
+            .text-por {
+                left: 50%;
+                transform: translateX(-50%);
+                top: 55%;
+            }
+
+            .text-sentir {
+                font-size: 2.2rem;
+                top: 75%;
+                padding-bottom: 20px;
+            }
+
+            .eye-top-left {
+                top: 2%;
+                left: 2%;
+            }
+
+            .eye-bottom-right {
+                bottom: 10%;
+                right: 2%;
             }
         }
     </style>
