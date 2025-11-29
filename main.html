@@ -140,11 +140,12 @@
         .interactive-item {
             background-color: #0f0f0f;
             border: 2px solid #2d0d0d;
-            padding: 40px 20px;
+            padding: 0;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            aspect-ratio: 1;
         }
 
         .interactive-item.centered {
@@ -188,6 +189,57 @@
             color: #8b1a1a;
             font-size: 0.9rem;
             font-style: italic;
+        }
+
+        .interactive-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .video-modal video {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+        }
+
+        .video-modal .close-button {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background-color: transparent;
+            border: 2px solid #6b8e6b;
+            color: #6b8e6b;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+        }
+
+        .video-modal .close-button:hover {
+            background-color: #6b8e6b;
+            color: #0a0a0a;
         }
 
         .statement-section {
@@ -276,18 +328,20 @@
             <h2>HABITA EL QUIEBRE</h2>
             
             <div class="interactive-grid">
-                <div class="interactive-item" onclick="playSound('breath')">
-                    <h4>respiración rota</h4>
-                    <p>inhala el quiebre</p>
+                <div class="interactive-item" onclick="openVideoModal('mitad1.mp4')">
+                    <video id="previewVideo" autoplay muted loop playsinline>
+                        <source src="mitad1.mp4" type="video/mp4">
+                    </video>
                 </div>
 
                 <div class="interactive-item centered" onclick="window.location.href='grito.html'">
                     <h4>GRITA</h4>
                 </div>
 
-                <div class="interactive-item" onclick="playSound('heartbeat')">
-                    <h4>latido manchado</h4>
-                    <p>pulso de altar</p>
+                <div class="interactive-item" onclick="openVideoModal('mitad2.mp4')">
+                    <video id="previewVideo2" autoplay muted loop playsinline>
+                        <source src="mitad2.mp4" type="video/mp4">
+                    </video>
                 </div>
             </div>
         </section>
@@ -320,6 +374,13 @@
         <p style="font-size: 0.9rem; margin-bottom: 10px;">2025</p>
         <p style="font-size: 0.8rem;">El desborde no aguarda presupuestos</p>
     </footer>
+
+    <div id="videoModal" class="video-modal">
+        <button class="close-button" onclick="closeVideoModal()">CERRAR</button>
+        <video id="fullscreenVideo" controls>
+            <source src="mitad1.mp4" type="video/mp4">
+        </video>
+    </div>
 
     <audio id="backgroundAudio" autoplay loop preload="auto" muted>
         <source src="1128.MP3" type="audio/mpeg">
@@ -375,6 +436,38 @@
             const title = document.querySelector('h1');
             title.style.textShadow = `${Math.random() * 5}px ${Math.random() * 5}px 0 #2d0d0d`;
         }, 3000);
+
+        // Funciones para el modal de video
+        function openVideoModal(videoSrc) {
+            const modal = document.getElementById('videoModal');
+            const fullscreenVideo = document.getElementById('fullscreenVideo');
+            fullscreenVideo.src = videoSrc;
+            modal.classList.add('active');
+            fullscreenVideo.muted = false;
+            fullscreenVideo.play();
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const fullscreenVideo = document.getElementById('fullscreenVideo');
+            fullscreenVideo.pause();
+            fullscreenVideo.currentTime = 0;
+            modal.classList.remove('active');
+        }
+
+        // Cerrar modal con ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+
+        // Cerrar modal al hacer clic fuera del video
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
 
         // Lógica de audio de fondo
         const audio = document.getElementById('backgroundAudio');
