@@ -345,9 +345,39 @@
             50% { height: 100vh; top: -10px; }
             100% { height: 0; top: 100vh; }
         }
+
+        .back-button {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background-color: transparent;
+            border: none;
+            color: #6b8e6b;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+
+        .back-button:hover {
+            color: #8b1a1a;
+            transform: scale(1.1);
+        }
+
+        .back-button svg {
+            width: 26px;
+            height: 26px;
+            display: block;
+        }
     </style>
 </head>
 <body>
+    <button class="back-button" onclick="goBack()" aria-label="Volver">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 18L9 12L15 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </button>
+
     <div class="blood-drip" style="left: 10%;"></div>
     <div class="blood-drip" style="left: 50%; animation-delay: 1s;"></div>
     <div class="blood-drip" style="left: 80%; animation-delay: 2s;"></div>
@@ -555,6 +585,10 @@
         audio.addEventListener('canplaythrough', () => {
             playAudio();
         });
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
     </script>
 </body>
 </html>
